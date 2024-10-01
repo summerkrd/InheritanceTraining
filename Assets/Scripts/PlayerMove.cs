@@ -9,9 +9,20 @@ public class PlayerMove : MonoBehaviour
     private float _rotateSpeed = 5f;
     private float _lastNonZeroXDirection = 1f;
 
+    public float MoveSpeed
+    {
+        get { return _moveSpeed; }
+        set { _moveSpeed = value; }
+    }
+
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        Debug.Log($"Скорость игрока {_moveSpeed}");
     }
 
     private void Update()
@@ -26,27 +37,14 @@ public class PlayerMove : MonoBehaviour
         }
 
         Rotate();
-
-        Debug.Log(_moveDirection.x);
     }
 
     private void Rotate()
     {
         Vector3 eulerAngles = transform.localEulerAngles;
         Vector3 newEulerAngles;
-
-        if (_moveDirection.x < -0.1f)
-        {
-            newEulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
-        }
-        else if (_moveDirection.x > 0.1f)
-        {
-            newEulerAngles = new Vector3(transform.rotation.x, 0f, transform.rotation.z);
-        }
-        else
-        {
-            newEulerAngles = new Vector3(transform.rotation.x, _lastNonZeroXDirection > 0 ? 0f : 180f, transform.rotation.z);
-        }
+        
+        newEulerAngles = new Vector3(transform.rotation.x, _lastNonZeroXDirection > 0 ? 0f : 180f, transform.rotation.z);
 
         transform.localEulerAngles = Vector3.Lerp(eulerAngles, newEulerAngles, Time.deltaTime * _rotateSpeed);
     }

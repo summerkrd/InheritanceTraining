@@ -32,6 +32,7 @@ public class ItemCollector : MonoBehaviour
 
     private void UseItem()
     {
+        _item.Use(gameObject);
         Destroy(_item.gameObject);
         _item = null;
     }
